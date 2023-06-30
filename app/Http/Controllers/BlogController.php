@@ -27,3 +27,4 @@ class BlogController extends Controller
     //     return $blogs->get();
     // }
 }
+                                                                                                                                                                                     

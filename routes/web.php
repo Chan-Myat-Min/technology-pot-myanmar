@@ -2,20 +2,33 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BlogController;
+use App\Http\Controllers\CommentController;
 use App\Models\Blog;
 use Illuminate\Support\Facades\Route;
 
 
 Route::get('/', [BlogController::class, 'index']);
-Route::get('/register',[AuthController::class, 'register']);
-Route::get('/login',[AuthController::class, 'login']);
+
+Route::get('/register', [AuthController::class, 'register']);
+Route::post('/register', [AuthController::class, 'registerStore']);
+
+Route::get('/login', [AuthController::class, 'login']);
+Route::post('/login', [AuthController::class, 'loginStore']);
+
+Route::post('/logout', [AuthController::class, 'logout']);
 
 Route::get('/blogs/{blog:slug}', function (Blog $blog) {
     return view('blog', [
-        'blog' => $blog,
+        'blog' => $blog->load('comments'), //egger loading
         'randomBlogs' => Blog::inRandomOrder()->take(3)->get()
     ]);
 })->where('blog', '[A-z\d\-_]+');
+
+
+Route::post('/blogs/{blog:slug}/comments', [CommentController::class, 'store']);
+
+
+
 
 // Route::get('/users/{user:username}', function (User $user) {
 //     // $blogs = $user->blogs->load('author', 'category');
@@ -38,9 +51,7 @@ Route::get('/blogs/{blog:slug}', function (Blog $blog) {
 //         // 'currentCategory' => $category
 //     ]);
 // });
-// //Route::get('/about', [AboutController::class, 'hello']);
 
-// Route::get('/register', [AuthController::class, 'create']);
 
 
 //wild card
