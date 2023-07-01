@@ -3,29 +3,38 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\VideoController;
+use App\Http\Middleware\AuthMiddleware;
+use App\Http\Middleware\GuestMiddleware;
 use App\Models\Blog;
 use Illuminate\Support\Facades\Route;
 
 
-Route::get('/', [BlogController::class, 'index']);
-
-Route::get('/register', [AuthController::class, 'register']);
+Route::middleware(GuestMiddleware::class)->group(function(){
+    Route::get('/register', [AuthController::class, 'register']);
 Route::post('/register', [AuthController::class, 'registerStore']);
-
 Route::get('/login', [AuthController::class, 'login']);
 Route::post('/login', [AuthController::class, 'loginStore']);
+});
 
+Route::middleware(AuthMiddleware::class)->group(function()
+{
+    Route::get('/', [BlogController::class, 'index']);
 Route::post('/logout', [AuthController::class, 'logout']);
+    Route::get('/blogs/{blog:slug}', function (Blog $blog) {
+        return view('blog', [
+            'blog' => $blog->load('comments'), //egger loading
+            'randomBlogs' => Blog::inRandomOrder()->take(3)->get()
+        ]);
+    })->where('blog', '[A-z\d\-_]+');
+    Route::post('/blogs/{blog:slug}/comments', [CommentController::class, 'store']);
+});
 
-Route::get('/blogs/{blog:slug}', function (Blog $blog) {
-    return view('blog', [
-        'blog' => $blog->load('comments'), //egger loading
-        'randomBlogs' => Blog::inRandomOrder()->take(3)->get()
-    ]);
-})->where('blog', '[A-z\d\-_]+');
 
 
-Route::post('/blogs/{blog:slug}/comments', [CommentController::class, 'store']);
+
+Route::get('/videos/', [VideoController::class, 'index']);
+Route::get('/videos/{video}', [VideoController::class, 'show']);
 
 
 

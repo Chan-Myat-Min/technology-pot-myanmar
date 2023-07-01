@@ -35,6 +35,9 @@ class AuthController extends Controller
 
     public function login()
     {
+        // if (auth()->check()){
+        //     abort(401);
+        // }
         return view('login.login');
     }
 
