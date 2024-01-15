@@ -24,6 +24,8 @@
 <p>&nbsp;<img align="center" src="https://github-readme-stats.vercel.app/api?username=chan-myat-min&show_icons=true&locale=en" alt="chan-myat-min" /></p>
 
 <p><img align="center" src="https://github-readme-streak-stats.herokuapp.com/?user=chan-myat-min&" alt="chan-myat-min" /></p>
+### 🔝 Top Contributed Repo
+![](https://github-contributor-stats.vercel.app/api?username=jaiswaladi246&limit=5&theme=flat&combine_all_yearly_contributions=true)
 
 
 ![snake animation](https://github.com/<seu user name>/<seu user name>/blob/output/github-contribution-grid-snake2.svg)
